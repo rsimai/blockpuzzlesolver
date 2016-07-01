@@ -5,45 +5,27 @@ import time
 
 #testarrays
 
-pieces = 8
-xmax = 5
-ymax = 5
+pieces = 3
+xmax = 4
+ymax = 4
 
 array = [[" " for x in range(xmax)] for y in range(ymax)]
 piece = [" " for x in range(pieces)]
 
-#array = [[' ', ' ', ' ', ' '],
-#         [' ', ' ', ' ', ' '],
-#         [' ', ' ', ' ', ' '],
-#         [' ', ' ', ' ', ' ']]
+array = [[' ', ' ', ' ', ' '],
+         [' ', ' ', ' ', ' '],
+         [' ', ' ', ' ', ' '],
+         [' ', ' ', ' ', ' ']]
 
 
-array = [[' ', ' ', ' ', ' ',' '],
-         [' ', ' ', ' ', ' ',' '],
-         [' ', ' ', ' ', ' ',' '],
-         [' ', ' ', ' ', ' ',' '],
-         [' ', ' ', ' ', ' ',' ']]
-
-# to try 4x4
-
-#piece[0] = [(0,0),(1,0),(2,0),(3,0),(0,1)]
+#piece[2] = [(0,0),(1,0),(2,0),(3,0),(0,1)]
 #piece[1] = [(1,0),(2,0),(3,0),(0,1),(1,1),(2,1)]
-#piece[2] = [(3,0),(0,1),(1,1),(2,1),(3,1)]
+#piece[0] = [(3,0),(0,1),(1,1),(2,1),(3,1)]
 
-#piece[0] = [(0,0),(1,0),(0,1),(1,1),(0,2),(0,3)]
-#piece[1] = [(0,0),(1,0),(0,1),(1,1)]
-#piece[2] = [(0,0),(1,0),(2,0),(0,1),(1,1),(2,1)]
 
-# to try 5x5
-
-piece[7] = [(0,0),(0,1)]
-piece[1] = [(0,0)]
-piece[2] = [(0,0)]
-piece[3] = [(0,0),(1,0),(2,0),(3,0)]
-piece[4] = [(0,0),(0,1),(0,2),(0,3)]
-piece[5] = [(0,0),(1,0)]
-piece[6] = [(0,0),(1,0),(2,0)]
-piece[0] = [(0,0),(1,0),(2,0),(0,1),(2,1),(0,2),(1,2),(2,2)]
+piece[2] = [(0,0),(1,0),(0,1),(1,1),(0,2),(0,3)]
+piece[1] = [(0,0),(1,0),(0,1),(1,1)]
+piece[0] = [(0,0),(1,0),(2,0),(0,1),(1,1),(2,1)]
 
 def printarray(myarray):
     delimiter = ''
@@ -57,7 +39,6 @@ def printarray(myarray):
         outline = outline + "*"
         print(outline)
     print(delimiter)
-#    time.sleep(0.1)
     return
 
 def checkpiece(mypiece):
@@ -72,12 +53,18 @@ def checkpiece(mypiece):
             ysize = i[1] + 1
     xrot = xmax - xsize
     yrot = ymax - ysize
+    time.sleep(0.5)
     return xrot, yrot
 
 
 
 def main_loop(mymatrix, level, status):
     newmatrix = copy.deepcopy(mymatrix)
+    #print "DEBUG: loop starts"
+    #print "DEBUG: level", level
+    #print "DEBUG: mymatrix ", mymatrix
+    #print "DEBUG: newmatrix", newmatrix
+    #print "DEBUG: status", status
     if level == pieces:
         if status == 'success':
             print "We're done, it's resolved!"
@@ -88,36 +75,59 @@ def main_loop(mymatrix, level, status):
             exit(1)
     mypiece = piece[level]
     xrot, yrot = checkpiece(mypiece)
+    #print "DEBUG: piece verified: mypiece, level, xrot, yrot:", mypiece, level, xrot, yrot
     status = 'success'
     y = 0
+    #print "DEBUG: start y loop to", yrot
     while y <= yrot:
+        #print "DEBUG: y", y
+        #print "DEBUG: start x loop to", xrot
         x = 0
         while x <= xrot:
+            #print "DEBUG: x", x
             piecestatus = 'success'
+            #print "DEBUG: mymatrix ", mymatrix
+            #print "DEBUG: newmatrix", newmatrix
+            #print "DEBUG: checking mypiece:", mypiece
             for i in mypiece:
                 xcheck = i[0] + x
                 ycheck = i[1] + y
+                #print "DEBUG: analyzing pos x, y:", xcheck, ycheck
                 if newmatrix[xcheck][ycheck] != " ":
+                    #print "DEBUG: fail, there's a conflict at", xcheck, ycheck, "'", newmatrix[xcheck][ycheck], "'"
                     piecestatus = 'fail'
                     newmatrix = copy.deepcopy(mymatrix)
                     break
                 else:
+                    #print "DEBUG: block matches, write to newmatrix at", xcheck, ycheck
                     newmatrix[xcheck][ycheck] = str(level)
             if piecestatus == 'success':
                 for i in mypiece:
                     xcheck = i[0] + x
                     ycheck = i[1] + y
                     newmatrix[xcheck][ycheck] = str(level)
-                #printarray(newmatrix)
+                printarray(newmatrix)
+                #print "DEBUG: call next level:", level +1
+                #print "DEBUG: mymatrix ", mymatrix
+                #print "DEBUG: newmatrix", newmatrix
+                
                 newmatrix, level, status = main_loop(newmatrix, level + 1, 'success')
                 if status == 'fail':
                     newmatrix = copy.deepcopy(mymatrix)
             else:
+                #print "DEBUG: this won't fit, reset matrix, try next pos"
+                #print "DEBUG: mymatrix ", mymatrix
+                #print "DEBUG: newmatrix", newmatrix
                 newmatrix = copy.deepcopy(mymatrix)
             if status == 'fail':
+                # continue
+                #print "DEBUG: had to go back one level, revert changes..."
+                #print "DEBUG: mymatrix ", mymatrix
+                #print "DEBUG: newmatrix", newmatrix
                 newmatrix = copy.deepcopy(mymatrix)
             x += 1
         y += 1
+    #print "DEBUG: failed, will need to go back ..."
     status = 'fail'
     return(mymatrix, level - 1, status)
 
