@@ -5,27 +5,11 @@ import time
 
 #testarrays
 
-pieces = 9
-xmax = 9
-ymax = 4
-
-array = [[" " for y in range(ymax)] for x in range(xmax)]
-piece = [" " for x in range(pieces)]
+#pieces = 9
+#xmax = 9
+#ymax = 4
 
 
-#array = [[' ', ' ', ' ', ' '],
-#         [' ', ' ', ' ', ' '],
-#         [' ', ' ', ' ', ' '],
-#         [' ', ' ', ' ', ' ']]
-
-
-#array = [[' ', ' ', ' ', ' ',' '],
-#         [' ', ' ', ' ', ' ',' '],
-#         [' ', ' ', ' ', ' ',' '],
-#         [' ', ' ', ' ', ' ',' '],
-#         [' ', ' ', ' ', ' ',' ']]
-
-# to try 4x4
 
 #piece[0] = [(0,0),(1,0),(2,0),(3,0),(0,1)]
 #piece[1] = [(1,0),(2,0),(3,0),(0,1),(1,1),(2,1)]
@@ -35,17 +19,35 @@ piece = [" " for x in range(pieces)]
 #piece[1] = [(0,0),(1,0),(0,1),(1,1)]
 #piece[2] = [(0,0),(1,0),(2,0),(0,1),(1,1),(2,1)]
 
-# to try 5x5
+#piece[0] = [(0,0),(1,0),(2,0),(3,0),(4,0),(5,0)]
+#piece[1] = [(0,0),(1,0),(2,0),(3,0),(1,1)]
+#piece[2] = [(0,0),(1,0),(2,0),(3,0)]
+#piece[3] = [(1,0),(1,1),(0,2),(1,2)]
+#piece[4] = [(0,0),(1,0),(1,1),(2,1)]
+#piece[5] = [(0,0),(1,0),(0,1),(1,1)]
+#piece[6] = [(1,0),(0,1),(1,1),(2,1)]
+#piece[7] = [(0,0),(1,0),(1,1)]
+#piece[8] = [(0,0),(0,1)]
 
-piece[0] = [(0,0),(1,0),(2,0),(3,0),(4,0),(5,0)]
-piece[1] = [(0,0),(1,0),(2,0),(3,0),(1,1)]
-piece[2] = [(0,0),(1,0),(2,0),(3,0)]
-piece[3] = [(1,0),(1,1),(0,2),(1,2)]
-piece[4] = [(0,0),(1,0),(1,1),(2,1)]
-piece[5] = [(0,0),(1,0),(0,1),(1,1)]
-piece[6] = [(1,0),(0,1),(1,1),(2,1)]
-piece[7] = [(0,0),(1,0),(1,1)]
-piece[8] = [(0,0),(0,1)]
+ymax = input("How many columns? ")
+xmax = input("How many rows? ")
+pieces = input("How many pieces? ")
+
+array = [[" " for y in range(ymax)] for x in range(xmax)]
+piece = [[] for x in range(pieces)]
+
+print "Let's design the pieces"
+
+for count in range(pieces):
+    for y in range(ymax):
+        line = raw_input(count)
+        x = 0
+        for letter in line:
+            if letter != " ":
+                piece[count] = piece[count] + [(x,y)]
+            x += 1
+        #print piece[count]
+
 
 def printarray(myarray):
     delimiter = ''
@@ -84,11 +86,8 @@ def main_loop(mymatrix, level, status):
     if level == pieces:
         if status == 'success':
             print "We're done, it's resolved!"
-            printarray(mymatrix)
+            #printarray(mymatrix)
             exit(0)
-        else:
-            print "No final match! Something's wrong with the data."
-            exit(1)
     mypiece = piece[level]
     xrot, yrot = checkpiece(mypiece)
     status = 'success'
@@ -126,3 +125,7 @@ def main_loop(mymatrix, level, status):
 
 array, level, status = main_loop(array, 0, 'success')
 
+if status == 'fail':
+    print "No match! Something's wrong with the data?"
+    exit(1)
+    
