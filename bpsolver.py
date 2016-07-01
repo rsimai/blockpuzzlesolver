@@ -5,12 +5,13 @@ import time
 
 #testarrays
 
-pieces = 8
-xmax = 5
-ymax = 5
+pieces = 9
+xmax = 9
+ymax = 4
 
-array = [[" " for x in range(xmax)] for y in range(ymax)]
+array = [[" " for y in range(ymax)] for x in range(xmax)]
 piece = [" " for x in range(pieces)]
+
 
 #array = [[' ', ' ', ' ', ' '],
 #         [' ', ' ', ' ', ' '],
@@ -18,11 +19,11 @@ piece = [" " for x in range(pieces)]
 #         [' ', ' ', ' ', ' ']]
 
 
-array = [[' ', ' ', ' ', ' ',' '],
-         [' ', ' ', ' ', ' ',' '],
-         [' ', ' ', ' ', ' ',' '],
-         [' ', ' ', ' ', ' ',' '],
-         [' ', ' ', ' ', ' ',' ']]
+#array = [[' ', ' ', ' ', ' ',' '],
+#         [' ', ' ', ' ', ' ',' '],
+#         [' ', ' ', ' ', ' ',' '],
+#         [' ', ' ', ' ', ' ',' '],
+#         [' ', ' ', ' ', ' ',' ']]
 
 # to try 4x4
 
@@ -36,18 +37,19 @@ array = [[' ', ' ', ' ', ' ',' '],
 
 # to try 5x5
 
-piece[7] = [(0,0),(0,1)]
-piece[1] = [(0,0)]
-piece[2] = [(0,0)]
-piece[3] = [(0,0),(1,0),(2,0),(3,0)]
-piece[4] = [(0,0),(0,1),(0,2),(0,3)]
-piece[5] = [(0,0),(1,0)]
-piece[6] = [(0,0),(1,0),(2,0)]
-piece[0] = [(0,0),(1,0),(2,0),(0,1),(2,1),(0,2),(1,2),(2,2)]
+piece[0] = [(0,0),(1,0),(2,0),(3,0),(4,0),(5,0)]
+piece[1] = [(0,0),(1,0),(2,0),(3,0),(1,1)]
+piece[2] = [(0,0),(1,0),(2,0),(3,0)]
+piece[3] = [(1,0),(1,1),(0,2),(1,2)]
+piece[4] = [(0,0),(1,0),(1,1),(2,1)]
+piece[5] = [(0,0),(1,0),(0,1),(1,1)]
+piece[6] = [(1,0),(0,1),(1,1),(2,1)]
+piece[7] = [(0,0),(1,0),(1,1)]
+piece[8] = [(0,0),(0,1)]
 
 def printarray(myarray):
     delimiter = ''
-    for y in range(ymax+2):
+    for x in range(xmax+2):
         delimiter = delimiter + "*"
     print(delimiter)
     for y in range(ymax):
@@ -57,8 +59,9 @@ def printarray(myarray):
         outline = outline + "*"
         print(outline)
     print(delimiter)
-#    time.sleep(0.1)
+    #time.sleep(0.1)
     return
+
 
 def checkpiece(mypiece):
     xrot = xmax
@@ -108,7 +111,7 @@ def main_loop(mymatrix, level, status):
                     xcheck = i[0] + x
                     ycheck = i[1] + y
                     newmatrix[xcheck][ycheck] = str(level)
-                #printarray(newmatrix)
+                printarray(newmatrix)
                 newmatrix, level, status = main_loop(newmatrix, level + 1, 'success')
                 if status == 'fail':
                     newmatrix = copy.deepcopy(mymatrix)
