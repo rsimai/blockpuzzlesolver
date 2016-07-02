@@ -3,34 +3,8 @@
 import copy
 import time
 
-#testarrays
-
-#pieces = 9
-#xmax = 9
-#ymax = 4
-
-
-
-#piece[0] = [(0,0),(1,0),(2,0),(3,0),(0,1)]
-#piece[1] = [(1,0),(2,0),(3,0),(0,1),(1,1),(2,1)]
-#piece[2] = [(3,0),(0,1),(1,1),(2,1),(3,1)]
-
-#piece[0] = [(0,0),(1,0),(0,1),(1,1),(0,2),(0,3)]
-#piece[1] = [(0,0),(1,0),(0,1),(1,1)]
-#piece[2] = [(0,0),(1,0),(2,0),(0,1),(1,1),(2,1)]
-
-#piece[0] = [(0,0),(1,0),(2,0),(3,0),(4,0),(5,0)]
-#piece[1] = [(0,0),(1,0),(2,0),(3,0),(1,1)]
-#piece[2] = [(0,0),(1,0),(2,0),(3,0)]
-#piece[3] = [(1,0),(1,1),(0,2),(1,2)]
-#piece[4] = [(0,0),(1,0),(1,1),(2,1)]
-#piece[5] = [(0,0),(1,0),(0,1),(1,1)]
-#piece[6] = [(1,0),(0,1),(1,1),(2,1)]
-#piece[7] = [(0,0),(1,0),(1,1)]
-#piece[8] = [(0,0),(0,1)]
-
-ymax = input("How many columns? ")
-xmax = input("How many rows? ")
+xmax = input("How many columns? ")
+ymax = input("How many rows? ")
 pieces = input("How many pieces? ")
 
 array = [[" " for y in range(ymax)] for x in range(xmax)]
