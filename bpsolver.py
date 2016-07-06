@@ -1,29 +1,33 @@
 #!/usr/bin/python
 
 import copy
-import time
 
+print
 xmax = input("How many columns? ")
-ymax = input("How many rows? ")
-pieces = input("How many pieces? ")
+ymax = input("How many rows?    ")
+pieces = input("How many parts?   ")
 
 array = [[" " for y in range(ymax)] for x in range(xmax)]
 piece = [[] for x in range(pieces)]
 
-print "Let's design the pieces"
+print
+print "Let's design the parts. Use Spaces and any character, empty line to jump to the next:"
 
 for count in range(pieces):
+    print
     for y in range(ymax):
-        line = raw_input(count)
+        line = raw_input("part "+str(count + 1)+" line "+str(y + 1)+": ")
+        if line == "":
+            break
         x = 0
         for letter in line:
             if letter != " ":
-                piece[count] = piece[count] + [(x,y)]
+                piece[count] = piece[count] + [(x, y)]
             x += 1
-        #print piece[count]
 
 
 def printarray(myarray):
+    # print out the array when done. Digits 0-9 to indicate the parts, framed by *
     delimiter = ''
     for x in range(xmax+2):
         delimiter = delimiter + "*"
@@ -35,11 +39,11 @@ def printarray(myarray):
         outline = outline + "*"
         print(outline)
     print(delimiter)
-    #time.sleep(0.1)
     return
 
 
 def checkpiece(mypiece):
+    # check how many steps we can move the pieces to the right and down
     xrot = xmax
     yrot = ymax
     xsize = 0
@@ -54,13 +58,14 @@ def checkpiece(mypiece):
     return xrot, yrot
 
 
-
 def main_loop(mymatrix, level, status):
     newmatrix = copy.deepcopy(mymatrix)
     if level == pieces:
         if status == 'success':
-            print "We're done, it's resolved!"
-            #printarray(mymatrix)
+        # if recursion level equals amount of parts and the last part matches we're done
+            print "Resolved!"
+            print
+            printarray(mymatrix)
             exit(0)
     mypiece = piece[level]
     xrot, yrot = checkpiece(mypiece)
@@ -84,7 +89,7 @@ def main_loop(mymatrix, level, status):
                     xcheck = i[0] + x
                     ycheck = i[1] + y
                     newmatrix[xcheck][ycheck] = str(level)
-                printarray(newmatrix)
+                # everything matches, go to the next recursion
                 newmatrix, level, status = main_loop(newmatrix, level + 1, 'success')
                 if status == 'fail':
                     newmatrix = copy.deepcopy(mymatrix)
@@ -95,11 +100,14 @@ def main_loop(mymatrix, level, status):
             x += 1
         y += 1
     status = 'fail'
+    # didn't match, return to the previous recursion
     return(mymatrix, level - 1, status)
+
+print
+print "Working ..."
 
 array, level, status = main_loop(array, 0, 'success')
 
 if status == 'fail':
-    print "No match! Something's wrong with the data?"
+    print "No match! Something wrong with the data?"
     exit(1)
-    

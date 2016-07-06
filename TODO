@@ -1,9 +1,6 @@
-* better input, something handy
+* validity checker for input data
 
-* Validity checker
+* sorting of parts by size/form to optimize for speed
 
-* Better output, currently limited to 0-9
+* better output, currently limited to max 9 parts
 
-* probably visualization
-
-* cleanup :-)
