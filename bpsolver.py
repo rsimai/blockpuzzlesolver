@@ -10,6 +10,8 @@ pieces = input("How many parts?   ")
 array = [[" " for y in range(ymax)] for x in range(xmax)]
 piece = [[] for x in range(pieces)]
 
+iteration = 0
+
 print
 print "Let's design the parts. Use Spaces and any character, empty line to jump to the next:"
 
@@ -24,6 +26,11 @@ for count in range(pieces):
             if letter != " ":
                 piece[count] = piece[count] + [(x, y)]
             x += 1
+
+
+def printstatus(iteration):
+    print "Iterations {0}\r".format(iteration),
+    return
 
 
 def printarray(myarray):
@@ -63,6 +70,7 @@ def main_loop(mymatrix, level, status):
     if level == pieces:
         if status == 'success':
         # if recursion level equals amount of parts and the last part matches we're done
+            print
             print "Resolved!"
             print
             printarray(mymatrix)
@@ -76,6 +84,8 @@ def main_loop(mymatrix, level, status):
         while x <= xrot:
             piecestatus = 'success'
             for i in mypiece:
+                global iteration
+                iteration += 1
                 xcheck = i[0] + x
                 ycheck = i[1] + y
                 if newmatrix[xcheck][ycheck] != " ":
@@ -90,6 +100,7 @@ def main_loop(mymatrix, level, status):
                     ycheck = i[1] + y
                     newmatrix[xcheck][ycheck] = str(level)
                 # everything matches, go to the next recursion
+                printstatus(iteration)
                 newmatrix, level, status = main_loop(newmatrix, level + 1, 'success')
                 if status == 'fail':
                     newmatrix = copy.deepcopy(mymatrix)
@@ -101,6 +112,7 @@ def main_loop(mymatrix, level, status):
         y += 1
     status = 'fail'
     # didn't match, return to the previous recursion
+    printstatus(iteration)
     return(mymatrix, level - 1, status)
 
 print
